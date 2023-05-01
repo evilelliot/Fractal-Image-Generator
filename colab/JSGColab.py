@@ -3,6 +3,8 @@ import numpy as np
 import random
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+from PIL import Image
+from google.colab import drive
 
 # Función para calcular el conjunto de Julia
 def julia_set(z, c, max_iter):
@@ -13,30 +15,36 @@ def julia_set(z, c, max_iter):
     return max_iter - 1
 
 # Parámetros de la imagen
-width = 10000
-height = 10000
+width = 1500
+height = 1500
 x_min, x_max = -1.5, 1.5
 y_min, y_max = -1.5, 1.5
-max_iter = 200
-quantum = 1
+max_iter = 100
+quantum = 30
 
-# Directory
-directory = '../../FractalesSorted'
-
-# Colores
+#Colores
 cmaps_dict = cm.datad
 cmaps_list = list(cmaps_dict.keys())
 cmaps_list.sort()
-# random_cmap = random.choice(cmaps_list)
-random_cmap = 'plasma'
+random_cmap = random.choice(cmaps_list)
+# random_cmap = 'plasma'
+# Montar el Google Drive
+drive.mount('/content/drive')
 
-# Comprobar si la carpeta 'FractalesSorted' existe
-if not os.path.exists(directory):
-    # Si la carpeta 'FractalesSorted' no existe, crear la carpeta
-    os.makedirs(directory)
-    print(f'Carpeta "FractalesSorted" creada con éxito.')
+# Establecer la ruta a la carpeta principal de Google Drive
+root_path = '/content/drive/My Drive/'
+
+# Establecer la ruta a la carpeta 'Fractales'
+fractales_folder_path = os.path.join(root_path, 'FractalesSorted')
+
+# CMAPS
+# Comprobar si la carpeta 'Fractales' existe
+if not os.path.exists(fractales_folder_path):
+    # Si la carpeta 'Fractales' no existe, crear la carpeta
+    os.makedirs(fractales_folder_path)
+    print(f'Carpeta "{fractales_folder_path}" creada con éxito.')
 else:
-    print(f'La carpeta "FractalesSorted" ya existe.')
+    print(f'La carpeta "{fractales_folder_path}" ya existe.')
 
 # Generar varias imágenes del conjunto de Julia
 for i in range(quantum):
@@ -61,7 +69,7 @@ for i in range(quantum):
     plt.axis('off')
 
     # Crear la carpeta con el nombre del cmap aleatorio si no existe
-    cmap_folder_path = os.path.join(directory, random_cmap)
+    cmap_folder_path = os.path.join(fractales_folder_path, random_cmap)
     if not os.path.exists(cmap_folder_path):
         os.makedirs(cmap_folder_path)
         print(f'Carpeta "{cmap_folder_path}" creada con éxito.')
@@ -69,7 +77,6 @@ for i in range(quantum):
     # Guardar imagen en la carpeta correspondiente al cmap aleatorio
     filename = f'julia_{random_cmap}_{real_part:.4f}_{imag_part:.4f}.png'
     filepath = os.path.join(cmap_folder_path, filename)
-    plt.savefig(filepath, dpi=500, bbox_inches='tight')
+    plt.savefig(filepath, dpi=300, bbox_inches='tight')
     print(f'Imagen {i+1} guardada en "{filepath}".')
 
-plt.close()
