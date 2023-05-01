@@ -13,15 +13,15 @@ def julia_set(z, c, max_iter):
     return max_iter - 1
 
 # Parámetros de la imagen
-width = 10000
-height = 10000
+width = 1500
+height = 1500
 x_min, x_max = -1.5, 1.5
 y_min, y_max = -1.5, 1.5
-max_iter = 200
-quantum = 1
+max_iter = 100
+quantum = 10
 
 # Directory
-directory = '../../FractalesSorted'
+directory = '../../FractalesSorted/JSG'
 
 # Colores
 cmaps_dict = cm.datad
